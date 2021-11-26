@@ -56,8 +56,7 @@ const Link = styled.a`
 `;
 
 const Wrapper = styled.article`
-  width: 340px;
-  height: 312px;
+
 `;
 
 const ImageWrapper = styled.div`
@@ -66,7 +65,6 @@ const ImageWrapper = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  height: 100%;
 `;
 
 const Row = styled.div`
