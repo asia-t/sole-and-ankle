@@ -31,6 +31,28 @@ const ShoeCard = ({
       ? 'new-release'
       : 'default'
 
+  const isOnSale = variant === 'on-sale'
+  const isRegular = variant === 'regular'
+
+  const styles = {
+    sale: {
+      textDecoration: 'line-through',
+      color: COLORS.gray[700],
+      flagColor: COLORS.primary
+    },
+    regular: {
+      textDecoration: 'none',
+      color: COLORS.gray[900]
+    },
+    newRelease: {
+      textDecoration: 'none',
+      color: COLORS.gray[900],
+      flagColor: COLORS.secondary
+    }
+  }
+
+  const style = isOnSale ? styles.sale : isRegular ? styles.regular : styles.newRelease
+
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
@@ -40,11 +62,15 @@ const ShoeCard = ({
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          <PriceWrapper>
+            <Price style={{'--textDecoration': style.textDecoration, '--color': style.color}}>{formatPrice(price)}</Price>
+          </PriceWrapper>
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          {isOnSale && <SalePrice>{formatPrice(salePrice)}</SalePrice>}
         </Row>
+        { variant !== 'default' && <Flag style={{'--bgColor': style.flagColor}}>{isOnSale ? 'Sale' : 'Just released!' }</Flag>}
       </Wrapper>
     </Link>
   );
@@ -56,7 +82,7 @@ const Link = styled.a`
 `;
 
 const Wrapper = styled.article`
-
+  position: relative;
 `;
 
 const ImageWrapper = styled.div`
@@ -69,6 +95,8 @@ const Image = styled.img`
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
@@ -76,7 +104,28 @@ const Name = styled.h3`
   color: ${COLORS.gray[900]};
 `;
 
-const Price = styled.span``;
+const PriceWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const Price = styled.span`
+  color: var(--color);  
+  text-decoration: var(--textDecoration);
+  font-weight: 500;
+`;
+
+const Flag = styled.div`
+  position: absolute;
+  top: 8px;
+  right: -5px;
+  background-color: var(--bgColor);
+  padding: 9px;
+  color: ${COLORS.white};
+  font-weight: ${WEIGHTS.boldish};
+  font-size: 14px;
+  border-radius: 2px;
+`
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};
